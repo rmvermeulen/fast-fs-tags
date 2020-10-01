@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common'
-import { CoreModule } from './core/core.module'
-import { ClientModule } from './client/client.module'
+import { ConfigModule } from '@nestjs/config'
+
+import config from './config'
 
 @Module({
-  imports: [CoreModule, ClientModule],
+  imports: [ConfigModule.forRoot({
+    load: [config]
+  })],
+  providers: [],
 })
-export class AppModule {}
+export class AppModule { }
