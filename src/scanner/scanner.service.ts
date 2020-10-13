@@ -21,20 +21,6 @@ async function* recursePath(path: string) {
     return
   }
 }
-;(async () => {
-  const it = recursePath('test/example-files')
-
-  for (let i = 0; i < 15; ++i) {
-    if (i % 3 == 0) {
-      await delay(1000)
-    }
-    const { value } = await it.next()
-    if (!value) {
-      break
-    }
-    console.log(i, value)
-  }
-})()
 @Injectable()
 export class ScannerService {
   // file extensions to look for
