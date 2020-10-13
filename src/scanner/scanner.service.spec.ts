@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { ScannerService } from './scanner.service'
+import { map, partition, pluck, prop } from 'ramda'
+import { toArray } from 'rxjs/operators'
+import { Info, ScannerService } from './scanner.service'
 
 describe('ScannerService', () => {
   let service: ScannerService
@@ -16,17 +18,20 @@ describe('ScannerService', () => {
     expect(service).toBeDefined()
   })
 
-  it('scans a directory to a given depth (WIP)', done => {
-    const obs = service.scan('.')
-
-    obs.subscribe({
-      next(info) {
-        console.log('next', info)
-      },
-      error(error) {
-        console.log('error', error)
-      },
-      complete: done,
-    })
+  it('scans a directory recursively', async () => {
+    const target = 'test/example-files'
+    const results: [Info[], Info[]] = await service
+      .scanPath(target)
+      .pipe(toArray())
+      .toPromise()
+      .then(partition(prop('isDirectory')))
+      .then(map(pluck('path')))
+    const [dirs, files] = results
+    expect(dirs).toEqual([`${target}/deep`, `${target}/deep/deeper`])
+    expect(files).toEqual([
+      `${target}/file1`,
+      `${target}/deep/file2`,
+      `${target}/deep/deeper/file3`,
+    ])
   })
 })

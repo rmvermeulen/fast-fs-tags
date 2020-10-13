@@ -1,34 +1,54 @@
 import { Injectable } from '@nestjs/common'
-import { readdir } from 'fs'
-import { EventEmitter } from 'events'
-import { fromEvent, Observable } from 'rxjs'
-import { scan } from 'rxjs/operators'
+import { stat, readdir } from 'fs'
+import { fromEvent, iif, Observable, of, merge } from 'rxjs'
+import { map, mergeMap, expand } from 'rxjs/operators'
+import { join } from 'path'
 
-type Info = {
+export type Info = {
   path: string
-  directory: boolean
+  isDirectory: boolean
 }
 
-const getInfo = async (path: string): Promise<Info> => ({
-  path,
-  // todo: read
-  directory: false,
-})
+const readdirObservable = (dir: string): Observable<string> =>
+  new Observable(sub => {
+    readdir(dir, (error, files) => {
+      if (error) {
+        return sub.error(error)
+      }
+      files.map(name => join(dir, name)).forEach(path => sub.next(path))
+      sub.complete()
+    })
+  })
+
+const getInfo = (path: string): Observable<Info> =>
+  new Observable(sub => {
+    stat(path, (error, stats) => {
+      if (error) {
+        return sub.error(error)
+      }
+      sub.next({
+        path,
+        isDirectory: stats.isDirectory(),
+      })
+      sub.complete()
+    })
+  })
+
+const scanPath = (path: string): Observable<Info> =>
+  readdirObservable(path).pipe(
+    mergeMap(getInfo),
+    mergeMap((info: Info) =>
+      // return info as-is, if it's a directory add entries
+      info.isDirectory ? merge(of(info), scanPath(info.path)) : of(info),
+    ),
+  )
 
 @Injectable()
 export class ScannerService {
   // file extensions to look for
   private readonly extensions: string[] = ['png', 'bmp']
-  // scan a directory recursively
-  scan(path: string, depth = -1): Observable<Info> {
-    return new Observable(subscriber => {
-      // todo: use readdir paths
-      for (const path of ['a', 'b']) {
-        getInfo(path)
-          .then(subscriber.next)
-          .catch(subscriber.error)
-      }
-      subscriber.complete()
-    })
+  // scanPath a directory recursively
+  scanPath(path: string): Observable<Info> {
+    return scanPath(path)
   }
 }
