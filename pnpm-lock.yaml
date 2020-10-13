@@ -4,6 +4,7 @@ dependencies:
   '@nestjs/core': 7.4.4_efc34def801f29a4094d370628537f54
   '@nestjs/platform-express': 7.4.4_a073563eda6e2cb33ae79215800d4b16
   better-sqlite3: 7.1.1
+  ramda: 0.27.1
   reflect-metadata: 0.1.13
   rimraf: 3.0.2
   rxjs: 6.6.3
@@ -6011,6 +6012,10 @@ packages:
       node: '>=0.4.x'
     resolution:
       integrity: sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=
+  /ramda/0.27.1:
+    dev: false
+    resolution:
+      integrity: sha512-PgIdVpn5y5Yns8vqb8FzBUEYn98V3xcPgawAkkgj0YJ0qDsnHCiNmZYfOGMgOvoB0eWFLpYbhxUR3mxfDIMvpw==
   /randombytes/2.1.0:
     dependencies:
       safe-buffer: 5.2.1
@@ -7840,6 +7845,7 @@ specifiers:
   eslint-plugin-import: ^2.20.1
   jest: 26.4.2
   prettier: ^1.19.1
+  ramda: ^0.27.1
   reflect-metadata: ^0.1.13
   rimraf: ^3.0.2
   rxjs: ^6.5.4
