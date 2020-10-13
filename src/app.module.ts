@@ -13,6 +13,12 @@ import config from './config'
       load: [config],
     }),
   ],
-  providers: [CacheService, ScannerService, SqliteService, AppLogger],
+  providers: [
+    { provide: 'node:fs', useValue: require('fs') },
+    CacheService,
+    ScannerService,
+    SqliteService,
+    AppLogger,
+  ],
 })
 export class AppModule {}
