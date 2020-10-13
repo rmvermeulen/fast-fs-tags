@@ -23,7 +23,7 @@ describe('ScannerService', () => {
   })
 
   it('scans a directory to a given depth (WIP)', async () => {
-    const obs = service.scan('example-files')
+    const obs = service.scanPath('example-files')
     const results = await obs.pipe(toArray()).toPromise()
     expect(results).toMatchInlineSnapshot(`Array []`)
   })

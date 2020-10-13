@@ -17,15 +17,15 @@ export class ScannerService {
   }
 
   // scan a directory recursively
-  scan(path: string, depth = -1): Observable<Info> {
-    this.logger.debug(`Scanning "${path}"`, 'ScannerService')
+  scanPath(path: string, depth = -1): Observable<Info> {
+    this.logger.debug(`scanPath "${path}"`)
     return new Observable(subscriber => {
       subscriber.complete()
     })
   }
 
   private async getPathInfo(path: string): Promise<Info> {
-    this.logger.debug(``)
+    this.logger.debug(`getPathInfo "${path}"`)
     return {
       path,
       // todo: read
