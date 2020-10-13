@@ -4,6 +4,7 @@ dependencies:
   '@nestjs/core': 7.4.4_efc34def801f29a4094d370628537f54
   '@nestjs/platform-express': 7.4.4_a073563eda6e2cb33ae79215800d4b16
   better-sqlite3: 7.1.1
+  bluebird: 3.7.2
   ramda: 0.27.1
   reflect-metadata: 0.1.13
   rimraf: 3.0.2
@@ -1620,7 +1621,6 @@ packages:
     resolution:
       integrity: sha512-fs4G6/Hu4/EE+F75J8DuN/0IpQqNjAdC7aEQv7Qt8MHGUH7Ckv2MwTEEeN9QehD0pfIDkMI1bkHYkKy7xHyKIg==
   /bluebird/3.7.2:
-    dev: true
     resolution:
       integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
   /bn.js/4.11.9:
@@ -7843,6 +7843,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': 3.9.1
   '@typescript-eslint/parser': 3.9.1
   better-sqlite3: ^7.1.1
+  bluebird: ^3.7.2
   eslint: 7.7.0
   eslint-config-prettier: ^6.12.0
   eslint-plugin-import: ^2.22.1
