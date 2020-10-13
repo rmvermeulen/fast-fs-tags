@@ -1,34 +1,35 @@
-import { Injectable } from '@nestjs/common'
-import { readdir } from 'fs'
-import { EventEmitter } from 'events'
-import { fromEvent, Observable } from 'rxjs'
-import { scan } from 'rxjs/operators'
+import { Inject, Injectable } from '@nestjs/common'
+import { Observable } from 'rxjs'
+import { AppLogger } from '../app-logger/app-logger.service'
 
 type Info = {
   path: string
   directory: boolean
 }
 
-const getInfo = async (path: string): Promise<Info> => ({
-  path,
-  // todo: read
-  directory: false,
-})
-
 @Injectable()
 export class ScannerService {
-  // file extensions to look for
-  private readonly extensions: string[] = ['png', 'bmp']
+  @Inject('node:fs')
+  private readonly fs: typeof import('fs')
+
+  constructor(private readonly logger: AppLogger) {
+    this.logger.setContext('ScannerService')
+  }
+
   // scan a directory recursively
   scan(path: string, depth = -1): Observable<Info> {
+    this.logger.debug(`Scanning "${path}"`, 'ScannerService')
     return new Observable(subscriber => {
-      // todo: use readdir paths
-      for (const path of ['a', 'b']) {
-        getInfo(path)
-          .then(subscriber.next)
-          .catch(subscriber.error)
-      }
       subscriber.complete()
     })
+  }
+
+  private async getPathInfo(path: string): Promise<Info> {
+    this.logger.debug(``)
+    return {
+      path,
+      // todo: read
+      directory: false,
+    }
   }
 }
