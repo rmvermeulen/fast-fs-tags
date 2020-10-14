@@ -4,6 +4,7 @@ import { CacheService } from './cache/cache.service'
 import { ScannerService } from './scanner/scanner.service'
 import { SqliteService } from './sqlite/sqlite.service'
 import { AppLogger } from './app-logger/app-logger.service'
+import { promises as fs } from 'fs'
 import config from './config'
 
 @Module({
@@ -12,6 +13,12 @@ import config from './config'
       load: [config],
     }),
   ],
-  providers: [CacheService, ScannerService, SqliteService, AppLogger],
+  providers: [
+    { provide: 'node:fs', useValue: fs },
+    CacheService,
+    ScannerService,
+    SqliteService,
+    AppLogger,
+  ],
 })
 export class AppModule {}
